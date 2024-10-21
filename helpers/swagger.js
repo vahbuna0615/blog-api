@@ -11,12 +11,8 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/',
-        description: 'Development server',
-      },
-      {
-        url: 'https://example.site/',
-        description: 'Testing server url'
+        url: 'https://blog-api-c9wg.onrender.com',
+        description: 'Deployed server url'
       }
     ],
     components: {
