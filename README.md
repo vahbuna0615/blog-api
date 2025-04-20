@@ -3,15 +3,10 @@
 ## Overview
 The Blog API allows users to create, update, delete, and retrieve blog posts. It also supports filtering blog posts by category or tags.
 
-## Project URL
-```
-https://blog-api-c9wg.onrender.com
-```
+## Project URLs
+[Project URL](https://blog-api-c9wg.onrender.com)  
+[Swagger URL](https://blog-api-c9wg.onrender.com/api-docs)  
 
-## Swagger URL
-```
-https://blog-api-c9wg.onrender.com/api-docs
-```
 
 ## Endpoints
 
