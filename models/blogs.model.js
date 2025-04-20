@@ -13,6 +13,14 @@ const blogSchema = mongoose.Schema({
   content: {
     type: String,
     required: [true, 'Blog Content cannot be empty']
+  },
+  category: {
+    type: String,
+    required: [true, 'Category cannot be empty']
+  },
+  tags: {
+    type: [String],
+    default: []
   }
 }, 
 {

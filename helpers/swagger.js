@@ -13,6 +13,10 @@ const options = {
       {
         url: 'https://blog-api-c9wg.onrender.com',
         description: 'Deployed server url'
+      },
+      {
+        url: 'http://localhost:5000',
+        description: 'Local server url'
       }
     ],
     components: {

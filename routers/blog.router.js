@@ -15,14 +15,6 @@ const { protect } = require('../middlewares/auth.middleware');
  *  paths:
  *   /api/blogs/{id}:
  *    get:
- *     components:
- *      securitySchemes:
- *        bearerAuth:
- *          type: http
- *          scheme: bearer
- *          bearerFormat: JWT
- *     security:
- *      - bearerAuth: []
  *     tags: [Blogs]
  *     summary: Get a specific blog
  *     description: Get a blog using the given id from the database
@@ -36,8 +28,6 @@ const { protect } = require('../middlewares/auth.middleware');
  *     responses:
  *      200:
  *        description: Retrieves blog with given id
- *      401:
- *        description: Unauthorized access
  *      404:
  *        description: Not Found error
  *      500:
@@ -50,22 +40,25 @@ router.get('/:id', getSpecificBlog)
  *  paths:
  *   /api/blogs:
  *    get:
- *     components:
- *      securitySchemes:
- *        bearerAuth:
- *          type: http
- *          scheme: bearer
- *          bearerFormat: JWT
- *     security:
- *      - bearerAuth: []
  *     tags: [Blogs]
  *     summary: Get all blogs
  *     description: Get all blogs from database
+ *     parameters:
+ *      - in: query
+ *        name: category
+ *        required: false
+ *        description: Category of the blogs
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: includedTags
+ *        required: false
+ *        description: Comma separated values of included tags with the blogs
+ *        schema: 
+ *          type: string
  *     responses:
  *      200:
  *        description: Retrieves all saved blogs
- *      401:
- *        description: Unauthorized access
  *      500:
  *        description: Other error
  */
@@ -102,9 +95,19 @@ router.get('/', getAllBlogs)
  *           type: string
  *           description: Content of the blog
  *           example: This is a new blog created 
+ *          category:
+ *            type: string
+ *            description: Category of the given blog
+ *            example: Technology
+ *          tags:
+ *            type: array
+ *            description: Tags included with the given blog
+ *            example: [ 'Tech', 'Programming' ]
  *     responses:
  *      201:
  *        description: Saves new blog into the DB
+ *      400:
+ *        description: Validation error
  *      401:
  *        description: Unauthorized access
  *      500:
@@ -143,6 +146,14 @@ router.post('/', protect, createBlog)
  *           type: string
  *           description: Content of the blog
  *           example: Updated blog content
+ *          category:
+ *            type: string
+ *            description: Category of the given blog
+ *            example: Technology
+ *          tags:
+ *            type: array
+ *            description: Tags included with the given blog
+ *            example: [ 'Tech', 'Programming' ]
  *     parameters:
  *      - in: path
  *        name: id

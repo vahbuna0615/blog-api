@@ -33,7 +33,18 @@ const getSpecificBlog = async(req, res, next) => {
 const getAllBlogs = async (req, res, next) => {
 
   try {
-    const blogs = await Blog.find()
+    const { category, includedTags } = req.query
+    
+    // If category and tags are provided, blogs including the given category and tags are returned
+    let options = {}
+    if (includedTags) {
+      const tags = includedTags.split(',')
+      options.tags = { $in: tags }
+    }
+
+    if (category) options.category = category
+
+    const blogs = await Blog.find(options)
     return res.status(200).json(blogs)
   } catch (err) {
     next(err)
@@ -48,19 +59,22 @@ const getAllBlogs = async (req, res, next) => {
 
 const createBlog = async (req, res, next) => {
 
-  const { title, content } = req.body
+  const { title, content, category, tags } = req.body
 
   try {
 
     const blog = await Blog.create({
       author: req.user.id,
       title,
-      content
+      content,
+      category,
+      tags
     })
 
     return res.status(201).json(blog)
 
   } catch (err) {
+    if (err.name === "ValidationError") res.status(400)
     next(err)
   }
 
@@ -75,7 +89,7 @@ const createBlog = async (req, res, next) => {
 const updateBlog = async (req, res, next) => {
 
   const { id } = req.params
-  const { title, content } = req.body
+  const { title, content, category, tags } = req.body
 
   try {
 
@@ -91,13 +105,14 @@ const updateBlog = async (req, res, next) => {
       throw new Error("Unauthorized. Can only modify/delete your own blogs.")
     }
 
-    await Blog.findByIdAndUpdate(id, { title, content }, { new: true })
+    await Blog.findByIdAndUpdate(id, { title, content, category, tags }, { new: true })
 
     return res.status(200).json({
       message: "Updated blog successfully"
     })
 
   } catch (err) {
+    if (err.name === "ValidationError") res.status(400)
     next(err)
   }
 }
